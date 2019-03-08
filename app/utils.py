@@ -1,16 +1,20 @@
 import re
 
+
 def read_html(filename):
     '''
-        Read an html file into a string.
+        Read an html file into a string and embed it into `base.html`.
     '''
-
+    base = 'templates/base.html'
     path = 'templates/{}.html'.format(filename)
 
     try:
-        with open(path, 'r', encoding='utf-8') as file:
-            html = file.read()
-            return html
+        with open(base, 'r', encoding='utf-8') as base, open(path, 'r', encoding='utf-8') as f:
+            base = base.read()
+            content = f.read()
+            response_body = base % {'content': content}
+
+            return response_body
     except FileNotFoundError as error:
         raise error
 
@@ -24,7 +28,7 @@ def get_response_data(response_body):
         ('Content-Type', 'text/html'),
         ('Content-Length', str(len(response_body)))
     ]
-    
+
     return status, response_headers
 
 def get_route(path, urls):
@@ -35,4 +39,4 @@ def get_route(path, urls):
         match = re.search(regex, path)
         if match:
             return callback
-    return not_found
+    return None
