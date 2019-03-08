@@ -1,10 +1,12 @@
 from wsgiref.simple_server import make_server
 from app.utils import get_route
-from app.views import index, test, not_found
+from app.views import index, test, not_found, add_product, get_product
 
 urls = [
     (r'^$', index),
     (r'test/?$', test),
+    (r'add/$', add_product),
+    (r'product/?$', get_product),
 ]
 
 def application(environ, start_response):
