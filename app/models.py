@@ -8,7 +8,7 @@ class Model():
         self.connection.row_factory = sqlite3.Row
 
     
-    def create(self, row):
+    def insert(self, row):
         columns = '({})'.format(','.join(row.keys()))
         values = '("{}")'.format('","'.join(row.values()))
         sql = 'INSERT INTO {} {} VALUES {}'.format(self.table, columns, values)
@@ -80,4 +80,3 @@ class Model():
             where += '{}="{}" AND '.format(key, value)
 
         return where
-        
