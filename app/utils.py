@@ -31,6 +31,14 @@ def get_response_data(response_body):
 
     return status, response_headers
 
+def redirect(location):
+    status = '302 Found'
+    response_headers = [
+        ('Location', location)
+    ]
+
+    return status, response_headers
+
 def get_route(path, urls):
     '''
         Find a a specific /path and return its callback function.
