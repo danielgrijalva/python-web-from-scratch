@@ -1,30 +1,30 @@
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h3 class="mt-3 text-muted">Add a product</h3>
+        <h3 class="mt-3 text-muted">Edit a product</h3>
         <hr>
         <form action="" method="POST">
+            <input type="hidden" name="id" value="{{ product.ID }}">
             <div class="form-group">
                 <label for="productName"><small class="text-muted">Product name</small></label>
-                <input name="name" type="text" class="shadow-sm form-control border-0" id="productName" aria-label="Product name"
+                <input name="name" value="{{ product.name }}" type="text" class="shadow-sm form-control border-0" id="productName" aria-label="Product name"
                     placeholder="Enter a name for your product">
             </div>
-
             <div class="form-group">
                 <label for="productDescription"><small class="text-muted">Description</small></label>
-                <textarea name="description" class="form-control shadow-sm rounded border-0" id="productDescription" aria-label="Product description"
-                    placeholder="Enter the product description" rows="3"></textarea>
+                <textarea name="description" value="{{ product.description }}" class="form-control shadow-sm rounded border-0" id="productDescription" aria-label="Product description"
+                    placeholder="Enter the product description" rows="3">{{ product.description }}</textarea>
             </div>
             <div class="form-group">
                 <label for="productPrice"><small class="text-muted">Price</small></label>
-                <input name="price" type="number" class="form-control shadow-sm rounded border-0" id="productPrice" placeholder="Enter the product price" aria-label="Product price">
+                <input name="price" value="{{ product.price }}" type="number" class="form-control shadow-sm rounded border-0" id="productPrice" placeholder="Enter the product price" aria-label="Product price">
             </div>
 
             <div class="form-group">
                 <label for="productStock"><small class="text-muted">Stock</small></label>
-                <input name="stock" type="number" class="form-control shadow-sm rounded border-0" id="productStock" placeholder="How many products available?" aria-label="Product stock">
+                <input name="stock" value="{{ product.stock }}" type="number" class="form-control shadow-sm rounded border-0" id="productStock" placeholder="How many products available?" aria-label="Product stock">
             </div>
-            <button type="submit" class="btn btn-lg btn-block btn-primary shadow-sm mt-3 border-0 float-right">Add product</button>
+            <button type="submit" class="btn btn-lg btn-block btn-success shadow-sm mt-3 border-0 float-right">Edit product</button>
         </form>
     </div>
 </div>

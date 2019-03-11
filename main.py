@@ -1,12 +1,13 @@
 from wsgiref.simple_server import make_server
 from app.utils import get_route
-from app.views import index, test, not_found, add_product, get_product
+from app.views import index, not_found, add_product, get_product, delete_product, edit_product
 
 urls = [
     (r'^$', index),
-    (r'test/?$', test),
     (r'add/$', add_product),
     (r'product/?$', get_product),
+    (r'delete/?$', delete_product),
+    (r'edit/?$', edit_product),
 ]
 
 def application(environ, start_response):
@@ -19,5 +20,8 @@ def application(environ, start_response):
         return not_found(environ, start_response)
 
 if __name__ == '__main__':
-    server = make_server('localhost', 8000, application)
+    host = 'localhost'
+    port = 8000
+    server = make_server(host, port, application)
+    print('Listening on http://{}:{}'.format(host, port))
     server.serve_forever()

@@ -6,7 +6,7 @@ class Model():
         self.table = table
         self.connection = sqlite3.connect(db + '.sqlite3')
         self.connection.row_factory = sqlite3.Row
-
+        self.cursor = self.connection.cursor()
     
     def insert(self, row):
         columns = '({})'.format(','.join(row.keys()))
@@ -14,9 +14,12 @@ class Model():
         sql = 'INSERT INTO {} {} VALUES {}'.format(self.table, columns, values)
 
         try:
-            self.connection.execute(sql)
+            self.cursor.execute(sql)
             self.connection.commit()
-            print('inserted')
+            inserted_id = self.cursor.lastrowid
+            print('inserted #{}'.format(inserted_id))
+
+            return inserted_id
         except sqlite3.OperationalError as e:
             # table doesn't exist
             print('creating table...')
@@ -25,10 +28,11 @@ class Model():
     
     def select_all(self):
         sql = 'SELECT * FROM {}'.format(self.table)
-        cursor = self.connection.execute(sql)
-
-        return list(map(dict, cursor.fetchall()))
-
+        try:
+            cursor = self.connection.execute(sql)
+            return list(map(dict, cursor.fetchall()))
+        except sqlite3.OperationalError as e:
+            return False
    
     def select_one(self, id):
         sql = 'SELECT * FROM {} WHERE ID={}'.format(self.table, id)
@@ -62,9 +66,13 @@ class Model():
         self.connection.commit()
 
 
-    def update(self, sets, id):
-        sets = '{} = "{}"'.format(sets[0], sets[1])
-        sql = 'UPDATE {} SET {} WHERE id = {}'.format(self.table, sets, id)
+    def update(self, new_data, id):
+        update = ''
+        for key, value in new_data.items():
+            update += '{}="{}",'.format(key, value)
+
+        sql = 'UPDATE {} SET {} WHERE id = {}'.format(self.table, update[:-1], id)
+        print(sql)
 
         try:
             cursor = self.connection.execute(sql)
