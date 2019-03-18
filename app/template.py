@@ -87,7 +87,7 @@ class Templite(object):
         })
 
     """
-    def __init__(self, text, *contexts):
+    def __init__(self, filename, *contexts):
         """Construct a Templite with the given `text`.
 
         `contexts` are dictionaries of values to use for future renderings.
@@ -125,6 +125,7 @@ class Templite(object):
         ops_stack = []
 
         # Split the text to form a list of tokens.
+        text = self.read_html(filename)
         tokens = re.split(r"(?s)({{.*?}}|{%.*?%}|{#.*?#})", text)
 
         for token in tokens:
@@ -245,3 +246,20 @@ class Templite(object):
             if callable(value):
                 value = value()
         return value
+
+    def read_html(self, filename):
+        '''
+            Read an html file into a string and embed it into `base.html`.
+        '''
+        base = 'templates/base.html'
+        path = 'templates/{}.html'.format(filename)
+
+        try:
+            with open(base, 'r', encoding='utf-8') as base, open(path, 'r', encoding='utf-8') as f:
+                base = base.read()
+                content = f.read()
+                response_body = base % {'content': content}
+
+                return response_body
+        except FileNotFoundError as error:
+            raise error
