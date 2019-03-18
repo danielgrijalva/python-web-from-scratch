@@ -1,13 +1,18 @@
 from wsgiref.simple_server import make_server
 from app.utils import get_route
-from app.views import index, not_found, add_product, get_product, delete_product, edit_product
+from views.dashboard import Dashboard
+from views.add_product import AddProduct
+from views.get_product import GetProduct
+from views.delete_product import DeleteProduct
+from views.edit_product import EditProduct
+from views.not_found import NotFound
 
 urls = [
-    (r'^$', index),
-    (r'add/$', add_product),
-    (r'product/?$', get_product),
-    (r'delete/?$', delete_product),
-    (r'edit/?$', edit_product),
+    (r'^$', Dashboard),
+    (r'add/$', AddProduct),
+    (r'product/?$', GetProduct),
+    (r'delete/?$', DeleteProduct),
+    (r'edit/?$', EditProduct),
 ]
 
 def application(environ, start_response):
@@ -15,9 +20,9 @@ def application(environ, start_response):
     
     callback = get_route(path, urls)
     if callback:
-        return callback(environ, start_response)
+        return callback(environ, start_response).serve()
     else:
-        return not_found(environ, start_response)
+        return NotFound(environ, start_response).serve()
 
 if __name__ == '__main__':
     host = 'localhost'
