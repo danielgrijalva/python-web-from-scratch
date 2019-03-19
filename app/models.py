@@ -72,7 +72,6 @@ class Model():
             update += '{}="{}",'.format(key, value)
 
         sql = 'UPDATE {} SET {} WHERE id = {}'.format(self.table, update[:-1], id)
-        print(sql)
 
         try:
             cursor = self.connection.execute(sql)
