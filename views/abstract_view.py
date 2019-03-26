@@ -3,9 +3,8 @@ from app.template import Templite
 from app.models import Model
 
 class AbstractView(ABC):
-    model = Model('crud', 'product')
-
-    def __init__(self, environ, start_response):
+    def __init__(self, environ, start_response, model):
+        self.model = Model('crud', 'product', model)
         self.environ = environ
         self.start_response = start_response
 
